@@ -26,23 +26,71 @@ app.get("/notes", function(req, res){
 })
 
 app.get("/api/notes", function(req,res){
+  
     res.json(data)
+  
+
+
+})
+app.delete("/api/notes/:id", function(req,res){
+    console.log("delete:", req.params.id,  req.params)
+    fs.readFile('./db/db.json', 'utf8', function(err, data){
+
+        //convert into an object
+        let newData = JSON.parse(data);
+
+        newData.splice(req.params.id,1);
+
+        //console.log("did i splice?", newData);
+
+        let output = JSON.stringify(newData);
+    
+        //write a new file
+        fs.writeFile("./db/db.json", output, function(){
+ 
+             res.json({
+                      message: "success"
+             })
+ 
+        })
+
+
+
+    });
 
 
 })
 
 app.post("/api/notes", function(req,res){
-    console.log("data coming in?", req.body); //data comes in
+    //console.log("data coming in?", req.body); //data comes in
     fs.readFile('./db/db.json', 'utf8', function(err, data){
       
         // Display the file content
-        console.log(data);
-        
-        //convert into an object
-       //add our data to an object
+        //console.log("data start",data);
+          //convert into an object
+        let newData = JSON.parse(data);
+
+        //add our data to an object
+        newData.push({
+            id: newData.length,
+            title: req.body.title, 
+            text: req.body.text
+        })
+        //console.log("data after the push",newData);
+
        //convert new object into string
+        let output = JSON.stringify(newData);
+    
        //write a new file
-       //res.sucess
+       fs.writeFile("./db/db.json", output, function(){
+
+            res.json({
+                     message: "success"
+            })
+
+       })
+
+       
 
 
     });
