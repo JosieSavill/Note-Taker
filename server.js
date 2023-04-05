@@ -106,7 +106,7 @@ app.post("/api/notes", function(req,res){
 
 
 app.listen(PORT, function(){
-    console.log("Server listening on port: " + PORT)
+    console.log("Server listening on port: http://localhost:" + PORT)
 })
 
 
