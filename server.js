@@ -3,12 +3,17 @@ const express = require('express');
 const path = require('path');
 const  fs = require('fs');
 const data = require('./db/db.json')
-
+// requiring clog.js ??
+const { clog } = require('./db/middleware/clog');
 
 
 const PORT = process.env.PORT || 3001;
 
 const app = express();
+
+// Import custom middleware, "cLog"
+app.use(clog);
+
 
 //catch all files to return
 app.use(express.json());
@@ -66,7 +71,7 @@ app.post("/api/notes", function(req,res){
     fs.readFile('./db/db.json', 'utf8', function(err, data){
       
         // Display the file content
-        //console.log("data start",data);
+        console.log("data start",data);
           //convert into an object
         let newData = JSON.parse(data);
 
@@ -76,7 +81,7 @@ app.post("/api/notes", function(req,res){
             title: req.body.title, 
             text: req.body.text
         })
-        //console.log("data after the push",newData);
+        console.log("data after the push",newData);
 
        //convert new object into string
         let output = JSON.stringify(newData);
